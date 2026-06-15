@@ -1,0 +1,81 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ world.name }} - Terraformer</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="game-body" data-world-id="{{ world.id }}">
+  <div id="hud"><b>🚀 {{ user.username }}</b><span>{{ world.name }}</span><span id="cameraMode">First Person</span><a href="/menu">Menu</a></div>
+  <div id="survival"></div>
+  <div id="stats"></div>
+  <div id="toolHud"><b>🔧 Multi-Tool</b><br><span id="toolMode">Mining Mode</span><br><small>R switch mode · TAB inventory · V camera</small></div>
+  <div id="tutorial">NOVA: First person is default. Use your multi-tool. Look at ore and hold left click to mine. Right click the pod crate to open storage. Right click NOVA inside the pod to read the crash log. Press Shift to sprint.</div>
+  <div id="chatBox"><div id="chatMessages"></div><input id="chatInput" placeholder="Message world..."></div>
+  <div id="crosshair">⬡</div>
+  <div id="targetHud"></div>
+  <div id="mineProgress"><div></div></div>
+
+  <div id="inventoryOverlay" class="hidden">
+    <div class="inv-panel">
+      <h2>🎒 Suit Inventory</h2>
+      <p>20 slots. Items do not stack. Double-click food, water, or oxygen capsules to use them.</p>
+      <div id="inventoryGrid"></div>
+      <p class="hint">Press ESC to close.</p>
+    </div>
+  </div>
+
+  <div id="containerOverlay" class="hidden">
+    <div class="inv-panel container-panel">
+      <h2 id="containerTitle">📦 Storage Container</h2>
+      <p>Click an item to transfer it. Left side is your suit inventory. Right side is the container.</p>
+      <div class="dual-inventory">
+        <div>
+          <h3>Player Inventory</h3>
+          <div id="playerContainerGrid" class="container-grid"></div>
+        </div>
+        <div>
+          <h3>Container Contents</h3>
+          <div id="containerGrid" class="container-grid"></div>
+        </div>
+      </div>
+      <p class="hint">ESC closes storage.</p>
+    </div>
+  </div>
+
+  <div id="buildMenu" class="hidden">
+    <div class="inv-panel build-panel">
+      <h2>🏗 Build Menu</h2>
+      <p>Starter survival structures. Click one to place it in front of you.</p>
+      <div class="build-grid">
+        <button data-build="solar">Solar Panel<br><small>10 Iron, 2 Silicon</small></button>
+        <button data-build="habitat">Living Compartment<br><small>25 Iron, 5 Titanium</small></button>
+        <button data-build="oxygen">Oxygen Machine<br><small>15 Iron, 1 Zeolite</small></button>
+        <button data-build="water">Water Collector<br><small>12 Iron, 3 Silicon</small></button>
+        <button data-build="greenhouse">Food Grower<br><small>20 Iron, 2 Water</small></button>
+        <button data-build="research">Research Screen<br><small>20 Iron, 5 Aluminum</small></button>
+        <button data-build="beacon">Beacon<br><small>10 Iron, 2 Silicon</small></button>
+      </div>
+      <p class="hint">More machines unlock in later updates.</p>
+      <button id="closeBuildMenu">Close</button>
+    </div>
+  </div>
+
+  <div id="computerOverlay" class="hidden">
+    <div class="inv-panel computer-panel">
+      <h2>💻 NOVA Crash Log</h2>
+      <p class="logline"><b>MISSION:</b> Terraforming ark Veyra Expedition.</p>
+      <p class="logline"><b>STATUS:</b> Orbital colony station destroyed during atmospheric entry.</p>
+      <p class="logline"><b>CREW:</b> No additional life signs detected.</p>
+      <p class="logline"><b>CAUSE:</b> Unknown energy surge struck the command ring before descent. Sabotage cannot be ruled out.</p>
+      <p class="logline"><b>DIRECTIVE:</b> Survive. Recover supplies. Stabilize oxygen, water and food. Begin terraforming protocol.</p>
+      <p class="hint">ESC closes the terminal.</p>
+      <button id="closeComputer">Close Log</button>
+    </div>
+  </div>
+
+  <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+  <script type="module" src="{{ url_for('static', filename='js/game.js') }}"></script>
+</body>
+</html>

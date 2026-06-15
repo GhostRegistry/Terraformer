@@ -1,0 +1,12 @@
+{% extends 'base.html' %}{% block body %}
+<nav class="topbar"><b>🚀 Terraformer: Last Survivor</b><span>{{ user.username }} · {{ user.role }}</span><a href="/logout">Logout</a></nav>
+<main class="menu-grid">
+  <section class="hero panel"><h1>World Menu</h1><p>Play alone, host your saved single-player world, or join a friend's hosted planet using their join code. Hosted worlds stay saved and playable even when the owner is offline.</p><form method="post" action="/world/create" class="world-create"><input name="name" placeholder="New single-player world name" value="Veyra-1 Crash World"><button>Create Single Player World</button></form></section>
+  <section class="panel"><h2>Join Friend World</h2><form method="post" action="/world/join"><input name="join_code" placeholder="Join code, e.g. AB12-CD34"><button>Join Hosted World</button></form></section>
+  {% if user.role in ['owner','admin'] %}<section class="panel"><h2>Owner/Admin</h2><p>Create dedicated accounts and manage access.</p><a class="button" href="/admin">Open Admin Panel</a></section>{% endif %}
+  <section class="panel wide"><h2>My Worlds</h2>{% with messages = get_flashed_messages() %}{% if messages %}{% for m in messages %}<div class="notice">{{ m }}</div>{% endfor %}{% endif %}{% endwith %}
+    {% if not owned and not joined %}<p class="muted">You do not have any worlds yet. Create one to start beside your escape pod.</p>{% endif %}
+    {% for w in owned %}<div class="world-card"><div><b>{{ w.name }}</b><br><span class="muted">Owner: you · {% if w.is_hosted %}Hosted code: {{ w.join_code }}{% else %}Private single-player{% endif %}</span></div><div class="world-actions"><a class="button" href="/game/{{ w.id }}">Play</a>{% if w.is_hosted %}<form method="post" action="/world/{{ w.id }}/unhost"><button>Unhost</button></form>{% else %}<form method="post" action="/world/{{ w.id }}/host"><button>Host World</button></form>{% endif %}</div></div>{% endfor %}
+    {% for w in joined %}<div class="world-card"><div><b>{{ w.name }}</b><br><span class="muted">Owner: {{ w.owner_username }} · joined world</span></div><a class="button" href="/game/{{ w.id }}">Play</a></div>{% endfor %}
+  </section>
+</main>{% endblock %}
